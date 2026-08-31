@@ -12,6 +12,7 @@ const UPLOAD_DIR = path.join(ROOT, "uploads");
 const DATA_FILE = path.join(DATA_DIR, "panel.json");
 const STATIC_DATA_FILE = path.join(ROOT, "panel.json");
 const PORT = Number(process.env.PORT || 3000);
+const HOST = process.env.HOST || "127.0.0.1";
 
 const defaultData = {
   todos: [
@@ -485,10 +486,11 @@ ensureStorage()
       });
     });
 
-    server.listen(PORT, "0.0.0.0", () => {
+    server.listen(PORT, HOST, () => {
       console.log(`Kindle reminder board is running:`);
       console.log(`- Kindle display: http://localhost:${PORT}/`);
       console.log(`- Computer editor: http://localhost:${PORT}/admin`);
+      console.log(`- Listening on: ${HOST}:${PORT}`);
     });
   })
   .catch((error) => {
