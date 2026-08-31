@@ -1,24 +1,42 @@
 # Kindle Reminder Panel
 
-一个给 Kindle Paperwhite 展示用的极简提醒面板。
+一个给 Kindle Paperwhite 展示用的极简提醒面板。新版使用 Vercel 托管网页和接口，使用 Supabase 保存数据。
 
-## GitHub Pages 展示
+## 页面
 
-静态展示页入口是 `index.html`，页面会读取同目录下的 `panel.json`。
+- Kindle 展示页：`/`
+- 电脑编辑页：`/admin`
+- 数据接口：`/api/panel`
+- 图片上传：`/api/upload`
 
-需要上传到 GitHub Pages 的核心文件：
+Kindle 展示页默认打开自由白板，隐藏表头和底部切换；点击屏幕后显示表头和切换按钮。
 
-- `index.html`
-- `panel.json`
-- `public/`
-- `uploads/`
+## Supabase 设置
 
-## 本地编辑
+1. 新建 Supabase 项目。
+2. 打开 SQL Editor，执行 `supabase/schema.sql`。
+3. 在 Storage 里新建公开 bucket：`panel-uploads`。
+4. 从 Project Settings 复制：
+   - Project URL
+   - service_role key
 
-如需在电脑上继续使用编辑后台，可以运行：
+`service_role` 只能放在 Vercel 环境变量里，不能放进浏览器代码。
+
+## Vercel 环境变量
+
+部署前在 Vercel 项目里设置：
+
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `ADMIN_PASSWORD`
+- `SESSION_SECRET`
+
+本地开发可以复制 `.env.example` 为 `.env.local` 后填写。
+
+## 本地开发
 
 ```sh
-npm run start
+npm run dev
 ```
 
 然后打开：
@@ -26,12 +44,4 @@ npm run start
 - 展示页：`http://localhost:3000/`
 - 编辑页：`http://localhost:3000/admin`
 
-本地服务保存的数据在 `data/panel.json`。要更新 GitHub Pages 展示内容时，把 `data/panel.json` 同步到根目录的 `panel.json` 后重新提交。
-
-现在电脑编辑页里有「同步云端」按钮。点击后会自动：
-
-1. 保存当前编辑内容到 `data/panel.json`
-2. 更新 GitHub Pages 使用的 `panel.json`
-3. 提交并推送到 GitHub
-
-GitHub Pages 发布后，Kindle 刷新即可看到最新内容。
+如果没有配置 Supabase，本地开发会临时读取和保存 `data/panel.json`，方便先看页面效果。
