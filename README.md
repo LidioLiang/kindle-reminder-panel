@@ -27,3 +27,11 @@ npm run start
 - 编辑页：`http://localhost:3000/admin`
 
 本地服务保存的数据在 `data/panel.json`。要更新 GitHub Pages 展示内容时，把 `data/panel.json` 同步到根目录的 `panel.json` 后重新提交。
+
+现在电脑编辑页里有「同步云端」按钮。点击后会自动：
+
+1. 保存当前编辑内容到 `data/panel.json`
+2. 更新 GitHub Pages 使用的 `panel.json`
+3. 提交并推送到 GitHub
+
+GitHub Pages 发布后，Kindle 刷新即可看到最新内容。

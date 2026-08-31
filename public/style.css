@@ -319,7 +319,37 @@ h1 {
   color: var(--panel);
 }
 
+.publish-button {
+  min-height: 46px;
+  padding: 8px 16px;
+  border: 3px solid var(--line);
+  border-radius: 0;
+  background: var(--button);
+  color: var(--ink);
+  font-family: Arial, "PingFang SC", sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.publish-button:active {
+  background: var(--ink);
+  color: var(--panel);
+}
+
+.publish-button:disabled {
+  color: var(--muted);
+  cursor: wait;
+}
+
 .save-status {
+  color: var(--muted);
+  font-family: Arial, "PingFang SC", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.publish-status {
   color: var(--muted);
   font-family: Arial, "PingFang SC", sans-serif;
   font-size: 17px;
@@ -606,6 +636,12 @@ h1 {
     font-size: 25px;
   }
 
+  .publish-button {
+    min-height: 42px;
+    padding: 7px 12px;
+    font-size: 16px;
+  }
+
   .tool-select,
   .tool-button,
   .image-button {
@@ -666,6 +702,12 @@ h1 {
     width: 42px;
     height: 42px;
     font-size: 22px;
+  }
+
+  .publish-button {
+    min-height: 38px;
+    padding: 6px 10px;
+    font-size: 14px;
   }
 
   .todo-item {

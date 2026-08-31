@@ -32,10 +32,18 @@ var board = document.getElementById("whiteboard");
 var boardView = document.getElementById("board-view");
 var tools = document.querySelector(".tools");
 var editToggle = document.getElementById("edit-toggle");
+var publishButton = document.getElementById("publish-button");
+var publishStatus = document.getElementById("publish-status");
 
 function setStatus(text) {
   if (saveStatus) {
     saveStatus.textContent = text;
+  }
+}
+
+function setPublishStatus(text) {
+  if (publishStatus) {
+    publishStatus.textContent = text;
   }
 }
 
@@ -57,6 +65,7 @@ function collectData() {
 }
 
 function saveNow() {
+  window.clearTimeout(saveTimer);
   setStatus("保存中");
   return fetch("/api/panel", {
     method: "POST",
@@ -76,10 +85,45 @@ function saveNow() {
     });
 }
 
+function publishNow() {
+  if (!publishButton) {
+    return;
+  }
+
+  publishButton.disabled = true;
+  setPublishStatus("正在同步");
+  saveNow()
+    .then(function () {
+      return fetch("/api/publish", {
+        method: "POST"
+      });
+    })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Publish failed");
+      }
+      return response.json();
+    })
+    .then(function (result) {
+      setPublishStatus(result.changed ? "已同步，Kindle 刷新可见" : "内容无变化");
+    })
+    .catch(function () {
+      setPublishStatus("同步失败");
+    })
+    .finally(function () {
+      publishButton.disabled = false;
+    });
+}
+
 function scheduleSave() {
   setStatus("未保存");
+  setPublishStatus("");
   window.clearTimeout(saveTimer);
   saveTimer = window.setTimeout(saveNow, 500);
+}
+
+if (publishButton) {
+  publishButton.addEventListener("click", publishNow);
 }
 
 function updateTodoSummary() {

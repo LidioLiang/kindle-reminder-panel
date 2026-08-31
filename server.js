@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { execFile } = require("child_process");
 const fs = require("fs");
 const fsp = require("fs/promises");
 const http = require("http");
@@ -9,6 +10,7 @@ const PUBLIC_DIR = path.join(ROOT, "public");
 const DATA_DIR = path.join(ROOT, "data");
 const UPLOAD_DIR = path.join(ROOT, "uploads");
 const DATA_FILE = path.join(DATA_DIR, "panel.json");
+const STATIC_DATA_FILE = path.join(ROOT, "panel.json");
 const PORT = Number(process.env.PORT || 3000);
 
 const defaultData = {
@@ -75,6 +77,96 @@ function normalizeData(input) {
 
 function sortTodos(todos) {
   return [...todos].sort((a, b) => Number(a.done) - Number(b.done));
+}
+
+function prepareStaticData(data) {
+  const normalized = normalizeData(data);
+  return {
+    ...normalized,
+    whiteboardHtml: normalized.whiteboardHtml.replace(/(["'(])\/uploads\//g, "$1uploads/")
+  };
+}
+
+function getReferencedUploadFiles(html) {
+  const files = new Set();
+  const pattern = /(?:src|href)=["'](?:\/?uploads\/)([^"']+)["']/gi;
+  let match;
+
+  while ((match = pattern.exec(html))) {
+    const filename = decodeURIComponent(match[1]).replace(/^\/+/, "");
+    const filePath = path.normalize(path.join(UPLOAD_DIR, filename));
+    if (filePath.startsWith(UPLOAD_DIR)) {
+      files.add(filePath);
+    }
+  }
+
+  return [...files];
+}
+
+function runGit(args) {
+  return new Promise((resolve, reject) => {
+    execFile("git", args, { cwd: ROOT }, (error, stdout, stderr) => {
+      if (error) {
+        error.output = `${stdout || ""}${stderr || ""}`.trim();
+        reject(error);
+        return;
+      }
+      resolve(`${stdout || ""}${stderr || ""}`.trim());
+    });
+  });
+}
+
+function hasStagedGitChanges() {
+  return new Promise((resolve, reject) => {
+    execFile("git", ["diff", "--cached", "--quiet"], { cwd: ROOT }, (error) => {
+      if (!error) {
+        resolve(false);
+        return;
+      }
+      if (error.code === 1) {
+        resolve(true);
+        return;
+      }
+      reject(error);
+    });
+  });
+}
+
+async function publishToGitHubPages() {
+  const data = prepareStaticData(await readData());
+  await fsp.writeFile(STATIC_DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+
+  const uploadFiles = [];
+  for (const filePath of getReferencedUploadFiles(data.whiteboardHtml)) {
+    try {
+      await fsp.access(filePath, fs.constants.R_OK);
+      uploadFiles.push(path.relative(ROOT, filePath));
+    } catch {
+      // Missing uploads are skipped so text changes can still publish.
+    }
+  }
+
+  await runGit(["add", "panel.json"]);
+  if (uploadFiles.length > 0) {
+    await runGit(["add", "-f", ...uploadFiles]);
+  }
+
+  if (!(await hasStagedGitChanges())) {
+    return {
+      changed: false,
+      url: "https://lidioliang.github.io/kindle-reminder-panel/"
+    };
+  }
+
+  const now = new Date();
+  const stamp = now.toISOString().replace("T", " ").slice(0, 16);
+  await runGit(["commit", "-m", `Update panel content ${stamp}`]);
+  await runGit(["push"]);
+
+  return {
+    changed: true,
+    url: "https://lidioliang.github.io/kindle-reminder-panel/"
+  };
 }
 
 async function ensureStorage() {
@@ -352,7 +444,7 @@ async function route(req, res) {
     send(res, 200, renderShell({
       title: "电脑编辑 - Kindle 提醒面板",
       mode: "admin-mode",
-      extraControls: '<button class="edit-toggle visible" id="edit-toggle" type="button" aria-label="编辑白板" title="编辑白板">⚙</button><span class="save-status" id="save-status">已保存</span>',
+      extraControls: '<button class="edit-toggle visible" id="edit-toggle" type="button" aria-label="编辑白板" title="编辑白板">⚙</button><button class="publish-button" id="publish-button" type="button">同步云端</button><span class="save-status" id="save-status">已保存</span><span class="publish-status" id="publish-status"></span>',
       body: renderViews(data, true)
     }));
     return;
@@ -373,6 +465,11 @@ async function route(req, res) {
 
   if (req.method === "POST" && url.pathname === "/api/upload") {
     await handleUpload(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/publish") {
+    sendJson(res, 200, await publishToGitHubPages());
     return;
   }
 
