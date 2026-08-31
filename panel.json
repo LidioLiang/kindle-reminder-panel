@@ -1,30 +1,30 @@
 {
   "todos": [
     {
-      "title": "确认 Kindle 云端展示效果",
-      "note": "重点看自由白板默认页、点击显示表头和底部切换是否顺手。",
+      "title": "做市场调研报告的 skills",
+      "note": "word 文档和 ppt",
       "done": false
     },
     {
-      "title": "整理今天最重要的一件事",
-      "note": "只写真正要推进的动作，让提醒面板保持清爽。",
+      "title": "梳理本周工作及下周计划",
+      "note": "复盘总结整理",
       "done": false
     },
     {
-      "title": "晚上复盘一个进展",
-      "note": "记录今天已经完成的部分，明天继续迭代。",
+      "title": "整理头绪",
+      "note": "写日记写思维导图，把自己脑海里所有的想法都写下来，利用 ai 帮自己梳理",
       "done": false
     },
     {
-      "title": "测试 Kindle 刷新",
-      "note": "部署成功后，在 Kindle 浏览器里刷新查看最新页面。",
-      "done": false
+      "title": "下午三点见新朋友",
+      "note": "惠州江北",
+      "done": true
     },
     {
-      "title": "决定是否接入云端编辑",
-      "note": "先确认展示稳定，再考虑加密码和在线后台。",
-      "done": false
+      "title": "给佳熹上课",
+      "note": "最后一节课",
+      "done": true
     }
   ],
-  "whiteboardHtml": "<p><font size=\"3\">今天只看最重要的提醒。</font></p><p><font size=\"3\">保持页面干净，保持行动清楚。</font></p><ol><li><font size=\"3\">先完成一个能产生结果的动作</font></li><li><font size=\"3\">少切换，多推进</font></li><li><font size=\"3\">晚上做一次简短复盘</font></li></ol>"
+  "whiteboardHtml": "\n            \n            \n            \n            <p><font size=\"3\">2026 年 9 月：止血启动月</font></p><p><font size=\"3\">目标：先让生活不继续失控</font></p><ol><li><font size=\"3\">客户目标：成交第1 个客户</font></li><li><font size=\"3\">家教目标：成交第1 个学生</font></li><li><font size=\"3\">现金目标：当月收入 5000-10000</font></li><li><font size=\"3\">状态目标：固定作息完成 30 天计划</font></li></ol><div><br></div><div><br></div><div>代办事项：</div><div><ol><li>联系汽车配件黄总</li><li>做群聊对接冯总</li><li>张总报价会议</li><li>做自家网站</li><li>做市场调研 skill</li></ol></div><div><br></div><div><br></div><div><br></div><div><br></div>\n            \n            8 月 31 日<div>负债：120257元</div><div>存款：10941 元</div><div>净存款：-109316 元</div><div>止血、还债、赚钱、恢复秩序</div><div><br></div><div><br></div><div><br></div><div>30 天自我信任计划：</div><div><ol><li>每天 5 点前起床</li><li>每天 23 点前睡觉</li><li>早起 1 小时不碰手机</li><li>每天运动 30 分钟</li><li>每天写一篇总结</li><li>每天早晨做计划</li></ol></div><div><br></div><div><br></div><div><h1 style=\"margin-bottom: 3pt; line-height: 16.1px; font-family: &quot;Arial Unicode MS&quot;; color: rgb(34, 34, 34); font-size: 10.5pt; font-weight: 400; margin-top: 0pt;\"><br></h1></div>\n          \n          \n          \n          \n          \n          "
 }
