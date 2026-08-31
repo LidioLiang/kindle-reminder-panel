@@ -33,3 +33,22 @@ values (
   '<p><font size="3">今天只看最重要的提醒。</font></p><p><font size="3">保持页面干净，保持行动清楚。</font></p>'
 )
 on conflict (id) do nothing;
+
+insert into storage.buckets (
+  id,
+  name,
+  public,
+  file_size_limit,
+  allowed_mime_types
+)
+values (
+  'panel-uploads',
+  'panel-uploads',
+  true,
+  8388608,
+  array['image/png', 'image/jpeg', 'image/gif', 'image/webp']
+)
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
