@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Kindle 提醒面板</title>
+  <link rel="stylesheet" href="public/style.css">
+</head>
+<body class="display-mode static-mode">
+  <div class="page">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Kindle Reminder Board</p>
+        <div class="title-row">
+          <h1 id="page-title">自由白板</h1>
+        </div>
+      </div>
+      <div class="date-card" aria-label="今天日期">
+        <strong id="today-date"></strong>
+        <span id="today-week"><span id="lunar-date">农历</span></span>
+      </div>
+    </header>
+
+    <main class="views">
+      <section class="view todo-panel" id="todo-view" aria-labelledby="page-title">
+        <div class="todo-summary" id="todo-summary">0 件提醒</div>
+        <ul class="todo-list" data-panel="todos"></ul>
+      </section>
+
+      <section class="view board-panel active" id="board-view" aria-labelledby="page-title">
+        <div class="board-shell">
+          <div class="whiteboard" id="whiteboard" data-panel="whiteboard" contenteditable="false" spellcheck="false" aria-label="自由白板"></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="面板切换">
+      <button class="tab-button active" type="button" data-target="board-view" data-title="自由白板">自由白板</button>
+      <button class="tab-button" type="button" data-target="todo-view" data-title="今日重要事项">重要事项</button>
+    </nav>
+  </div>
+
+  <script src="public/lunar.js"></script>
+  <script src="public/display.js" data-panel-source="panel.json"></script>
+</body>
+</html>
