@@ -1,7 +1,9 @@
 (function () {
-  var projectUrl = "https://pfrvyytqffifglqkexmx.supabase.co";
-  var publicKey = "sb_publishable_i3OEeZ5XXb3EYi_YbS1yEw_0Ne14X5T";
-  var endpoint = projectUrl + "/rest/v1/panel_data?id=eq.main&select=todos_json,whiteboard_html,updated_at&t=" + new Date().getTime();
+  var cacheBuster = new Date().getTime();
+  var endpoints = [
+    "https://raw.githubusercontent.com/LidioLiang/kindle-reminder-panel/main/docs/panel.json?t=" + cacheBuster,
+    "panel.json?t=" + cacheBuster
+  ];
   var title = document.getElementById("page-title");
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab-button"));
   var views = Array.prototype.slice.call(document.querySelectorAll(".view"));
@@ -34,7 +36,7 @@
   }
 
   function renderPanel(row) {
-    var todos = row && Array.isArray(row.todos_json) ? row.todos_json : [];
+    var todos = row && Array.isArray(row.todos) ? row.todos : [];
     todoList.innerHTML = sortTodos(todos).map(function (todo) {
       var done = todo.done ? " done" : "";
       var checked = todo.done ? "true" : "false";
@@ -44,30 +46,31 @@
         '<p class="todo-note">' + escapeHtml(todo.note || "") + '</p></div></li>';
     }).join("");
     todoSummary.textContent = todos.length + " 件提醒";
-    whiteboard.innerHTML = sanitizeRichHtml(row && row.whiteboard_html) || "<p>自由白板暂无内容。</p>";
+    whiteboard.innerHTML = sanitizeRichHtml(row && row.whiteboardHtml) || "<p>自由白板暂无内容。</p>";
   }
 
   function showLoadError() {
     whiteboard.innerHTML = "<p>暂时没有读取到提醒内容，请稍后刷新。</p>";
   }
 
-  function loadPanel() {
+  function loadPanel(endpointIndex) {
+    if (endpointIndex >= endpoints.length) {
+      showLoadError();
+      return;
+    }
+
     var request = new XMLHttpRequest();
-    request.open("GET", endpoint, true);
-    request.setRequestHeader("apikey", publicKey);
-    request.setRequestHeader("Authorization", "Bearer " + publicKey);
-    request.setRequestHeader("Cache-Control", "no-cache");
+    request.open("GET", endpoints[endpointIndex], true);
     request.onreadystatechange = function () {
       if (request.readyState !== 4) return;
       if (request.status >= 200 && request.status < 300) {
         try {
-          var rows = JSON.parse(request.responseText);
-          renderPanel(rows[0] || null);
+          renderPanel(JSON.parse(request.responseText));
         } catch (error) {
-          showLoadError();
+          loadPanel(endpointIndex + 1);
         }
       } else {
-        showLoadError();
+        loadPanel(endpointIndex + 1);
       }
     };
     request.send();
@@ -94,5 +97,5 @@
     else hideChrome();
   });
 
-  loadPanel();
+  loadPanel(0);
 })();

@@ -1,0 +1,21 @@
+{
+  "todos": [
+    {
+      "title": "确认 Kindle 云端展示效果",
+      "note": "重点看自由白板默认页、点击显示表头和底部切换是否顺手。",
+      "done": false
+    },
+    {
+      "title": "整理今天最重要的一件事",
+      "note": "只写真正要推进的动作，让提醒面板保持清爽。",
+      "done": false
+    },
+    {
+      "title": "晚上复盘一个进展",
+      "note": "记录今天已经完成的部分，明天继续迭代。",
+      "done": false
+    }
+  ],
+  "whiteboardHtml": "<p><font style=\"font-size: 0.82em;\">2026 年 9 月：止血启动月</font></p><p><font style=\"font-size: 0.82em;\">目标：先让生活不继续失控</font></p><ol><li><font style=\"font-size: 0.82em;\">客户目标：成交第1 个客户</font></li><li><font style=\"font-size: 0.82em;\">家教目标：成交第1 个学生</font></li><li><font style=\"font-size: 0.82em;\">现金目标：当月收入 5000-10000</font></li><li><font style=\"font-size: 0.82em;\">状态目标：固定作息完成 30 天计划</font></li></ol><div><br></div><div><br></div><div>代办事项：</div><div><ol><li>联系汽车配件黄总</li><li>做群聊对接冯总</li><li>张总报价会议</li><li>做自家网站</li><li>做市场调研 skill</li></ol></div><div><br></div><div><br></div><div><br></div><div><br></div><p>8 月 31 日</p><div>负债：120257元</div><div>存款：10941 元</div><div>净存款：-109316 元</div><div>止血、还债、赚钱、恢复秩序</div><div><br></div><div><br></div><div><br></div><div>30 天自我信任计划：</div><div><ol><li>每天 5 点前起床</li><li>每天 23 点前睡觉</li><li>早起 1 小时不碰手机</li><li>每天运动 30 分钟</li><li>每天写一篇总结</li><li>每天早晨做计划</li></ol></div><div><br></div><div><br></div><div><h1 style=\"margin: 0pt 0px 3pt; font-size: 10.5pt; line-height: 16.1px; font-family: &quot;Arial Unicode MS&quot;; color: rgb(34, 34, 34); font-weight: 400;\"><br></h1></div>",
+  "updatedAt": "2026-09-01T00:12:02.521Z"
+}

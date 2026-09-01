@@ -33,6 +33,8 @@ export default function AdminPanel({ initialData }) {
   const [activeView, setActiveView] = useState("board-view");
   const [activeTodo, setActiveTodo] = useState(null);
   const [saveStatus, setSaveStatus] = useState("已保存");
+  const [publishStatus, setPublishStatus] = useState("");
+  const [publishing, setPublishing] = useState(false);
   const [boardEditing, setBoardEditing] = useState(false);
   const saveTimer = useRef(null);
   const boardRef = useRef(null);
@@ -77,10 +79,38 @@ export default function AdminPanel({ initialData }) {
       .then((saved) => {
         setData(saved);
         setSaveStatus("已保存");
+        return saved;
       })
       .catch(() => {
         setSaveStatus("保存失败");
+        return null;
       });
+  }
+
+  async function publishToKindle() {
+    setPublishing(true);
+    setPublishStatus("正在同步");
+
+    const saved = await saveNow();
+    if (!saved) {
+      setPublishStatus("同步失败");
+      setPublishing(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/publish", {
+        method: "POST"
+      });
+      if (!response.ok) {
+        throw new Error("Publish failed");
+      }
+      setPublishStatus("已同步");
+    } catch {
+      setPublishStatus("同步失败");
+    } finally {
+      setPublishing(false);
+    }
   }
 
   function scheduleSave(nextData = data) {
@@ -260,6 +290,8 @@ export default function AdminPanel({ initialData }) {
               <h1 id="page-title">{activeView === "board-view" ? "自由白板" : "今日重要事项"}</h1>
               <button className={`edit-toggle ${activeView === "board-view" ? "visible" : ""}`} type="button" aria-label="编辑白板" aria-pressed={boardEditing} onClick={() => setWhiteboardEditing(!boardEditing)}>⚙</button>
               <span className="save-status">{saveStatus}</span>
+              <button className="publish-button" type="button" aria-label="同步到 Kindle" title="同步到 Kindle" disabled={publishing} onClick={publishToKindle}>↥</button>
+              <span className="publish-status" aria-live="polite">{publishStatus}</span>
             </div>
           </div>
           <div className="date-card" aria-label="今天日期">

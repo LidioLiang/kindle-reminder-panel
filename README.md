@@ -30,6 +30,12 @@ Kindle 展示页默认打开自由白板，隐藏表头和底部切换；点击�
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `ADMIN_PASSWORD`
 - `SESSION_SECRET`
+- `GITHUB_PANEL_TOKEN`（仅允许本仓库 Contents 读写）
+- `GITHUB_PANEL_OWNER`
+- `GITHUB_PANEL_REPO`
+- `GITHUB_PANEL_BRANCH`
+
+电脑后台仍会自动保存到 Supabase。需要让 Kindle 获取最新内容时，点击后台标题旁的同步图标，内容会发布到 GitHub Pages 使用的 `docs/panel.json`。
 
 本地开发可以复制 `.env.example` 为 `.env.local` 后填写。
 
