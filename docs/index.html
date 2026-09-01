@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Kindle 提醒面板</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="display-mode static-mode chrome-hidden">
+  <div class="page">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Kindle Reminder Board</p>
+        <div class="title-row"><h1 id="page-title">自由白板</h1></div>
+      </div>
+      <div class="date-card" aria-label="今天日期">
+        <strong id="today-date"></strong>
+        <span id="today-week">星期</span>
+      </div>
+    </header>
+
+    <main class="views">
+      <section class="view todo-panel" id="todo-view">
+        <div class="todo-summary" id="todo-summary">0 件提醒</div>
+        <ul class="todo-list" data-panel="todos"></ul>
+      </section>
+
+      <section class="view board-panel active" id="board-view">
+        <div class="board-shell">
+          <div class="whiteboard" id="whiteboard" data-panel="whiteboard">正在读取提醒内容...</div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="面板切换">
+      <button class="tab-button active" type="button" data-target="board-view" data-title="自由白板">自由白板</button>
+      <button class="tab-button" type="button" data-target="todo-view" data-title="今日重要事项">重要事项</button>
+    </nav>
+  </div>
+
+  <script src="lunar.js"></script>
+  <script src="display.js"></script>
+</body>
+</html>

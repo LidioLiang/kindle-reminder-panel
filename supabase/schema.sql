@@ -10,6 +10,15 @@ alter table public.panel_data enable row level security;
 revoke all on table public.panel_data from anon;
 revoke all on table public.panel_data from authenticated;
 
+grant select on table public.panel_data to anon;
+
+drop policy if exists "Public can read the main panel" on public.panel_data;
+create policy "Public can read the main panel"
+on public.panel_data
+for select
+to anon
+using (id = 'main');
+
 insert into public.panel_data (id, todos_json, whiteboard_html)
 values (
   'main',
